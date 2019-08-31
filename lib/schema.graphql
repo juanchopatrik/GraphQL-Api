@@ -1,12 +1,15 @@
 type Course {
-  _id: ID #
-  title: String 
-  teacher: String
-  description: String
-  topic: String
+  _id: ID!
+  title: String !
+  teacher: String!
+  description: String!
+  topic: String!
 }
 
 type Query {
   "Devuelve todos cursos"
-  getCourses: [Course] #cuando se ejecute get courses debe cumplirse el echema de arriba
+  getCourses: [Course]#cuando se ejecute get courses debe cumplirse el echema de arriba
+  "Devuelve un curso"
+  getCourse(id: ID!): Course #id es el argumento. el ! dice que es obligatorio. Course sin
+  #[] significa que solo sera un objeto
 }

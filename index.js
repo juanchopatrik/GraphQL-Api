@@ -1,7 +1,6 @@
 'use strict'
 
-const { buildSchema } = require('graphql')/** build schcema nos permite construir el
-squema */
+const { makeExecutableSchema } = require('graphql-tools')/** mejor forma de invocar schema */
 const express = require('express')
 const gqlMiddleware = require('express-graphql')/** es el midleware */
 const { readFileSync } = require('fs')/**leer el archivo de forma sincrona por que 
@@ -14,17 +13,16 @@ const port = process.env.port || 3000
 
 /* definiendo el esquema, graphql depende el schema como tal para crear consultas el schema
 es la estructura de los datos que se pueden consultar y el tipo de dato que es, */
-const schema = buildSchema(
-  readFileSync(
-    join(__dirname, 'lib', 'schema.graphql'),/**lee como esquema graphql */
+const typeDefs = readFileSync(//este me lleva a schema
+    join(__dirname, 'lib', 'schema.graphql'),
     'utf-8'
   )
-)/** query me permite ejecutar que campos exactos quiero */
+const schema = makeExecutableSchema({ typeDefs, resolvers })/*typedyfs es la propiedad*/
 
 app.use('/api', gqlMiddleware({
   schema: schema,
   rootValue: resolvers, /** se ingresan los resolvers */
-  graphiql: true/** es el entorno de desarrollo de graphql */
+  graphql: true/** es el entorno de desarrollo de graphql */
 }))
 
 app.listen(port, () => {
